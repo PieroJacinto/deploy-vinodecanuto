@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head') %> 
+</head>
+<body>
+    <header>
+        <%- include('./partials/header') %>
+    </header>
+    <main class="main-pad ">
+        <section class="home-pad">
+            <h1>carrito</h1>
+            <hr>          
+        </section>
+        <h2>carrito prueba</h2>
+        <section class="home-pad">
+            <% productoCarro.forEach(producto => { %> 
+                <div class="carrito-container">
+                    <div class="carrito-item">
+                        <h2><%= producto.nombre %> <span class="price">$<%= parseInt(producto.precio) * producto.quantity %></span></h2>
+                        <form action="/cart/update" method="post" class="update">
+                            <input type="hidden" name="id" value="<%= producto.id %>" />
+                            <input type="number" name="quantity" value="<%= producto.quantity %>" id="quantity">
+                            <button type="submit">
+                                <i class="fa-solid fa-sync"></i>
+                            </button>
+                        </form>
+                        <form action="/cart/delete" method="post" class="delete">
+                            <input type="hidden" name="id" value="<%= producto.id %>" />
+                            <button type="submit">
+                                <i class="fa-solid fa-times"></i>
+                            </button>
+                        </form>
+
+                    </div>
+
+                </div>
+                 
+            <% }) %>
+        </section>
+
+    </main>
+</body>
+</html>
+
+
