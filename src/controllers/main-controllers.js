@@ -154,9 +154,9 @@ module.exports = {
     let product = one(req.body.id);
     let cantidad = req.body.cantidad
     // Comprobamos si el producto existe en el carrito
-    if (req.session.cart.find(item => item.id == product.id)){
+    if (res.locals.cart.find(item => item.id == product.id)){
         // Caso 1: existe y actualizamos cantidad
-        req.session.cart = req.session.cart.map(item => {
+        res.locals.cart = req.locals.cart.map(item => {
             if (item.id == product.id) {
                 item.quantity = item.quantity + cantidad
             }
@@ -164,10 +164,10 @@ module.exports = {
         })
     }else {
         // Caso 2:agregamops el carrito y seteamos la cantidad
-        req.session.cart.push({...product, quantity:cantidad})
+        res.locals.cart.push({...product, quantity:cantidad})
     }    
     
-    // console.log(req.session.cart);
+    console.log(res.locals.cart);
     return res.redirect("/")
   },
   carrito: async (req,res) => { 
@@ -179,10 +179,10 @@ module.exports = {
     // Checueamos cantidad
     if(req.body.quantity == 0){
       // Caso 1: si es igual a cero, eliminamos el producto
-      req.session.cart = req.session.cart.filter(item => item.id != req.body.id)
+      res.locals.cart = res.locals.cart.filter(item => item.id != req.body.id)
     }else {
         // Caso 2: actualizamos todos los itemes del carrito seteando la catidad en el producto seleccionado
-        req.session.cart = req.session.cart.map(item => {
+        req.locals.cart = req.locals.cart.map(item => {
             if (item.id == req.body.id) {
                 item.quantity = req.body.quantity
             }
