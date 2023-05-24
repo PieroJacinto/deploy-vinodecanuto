@@ -29,8 +29,7 @@ app.use(express.json());
 app.use(session({
     resave: false,
     saveUninitialized: false,
-    secret: 'secret',
-    proxy: true,    
+    secret: 'secret',       
 }));
 //REQUERIMOS Y EJECUTAMOS MIDDLEWARE DE CARRITO DE COMPRAS
 app.use(require("./middlewares/carrito"))
