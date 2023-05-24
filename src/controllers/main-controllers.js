@@ -178,7 +178,7 @@ module.exports = {
     // Checueamos cantidad
     if(req.body.quantity == 0){
       // Caso 1: si es igual a cero, eliminamos el producto
-      res.locals.cart = res.locals.cart.filter(item => item.id != req.body.id)
+      req.locals.cart = res.locals.cart.filter(item => item.id != req.body.id)
     }else {
         // Caso 2: actualizamos todos los itemes del carrito seteando la catidad en el producto seleccionado
         req.locals.cart = req.locals.cart.map(item => {
