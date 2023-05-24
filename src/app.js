@@ -27,8 +27,8 @@ app.use(express.json());
 
 // EJECUTAMOS SESSION
 app.use(session({
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     secret: 'secret',
     proxy: true,    
 }));
