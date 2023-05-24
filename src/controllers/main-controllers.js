@@ -140,13 +140,13 @@ module.exports = {
     const cumpleCategorias = !filtros.categoria || filtros.categoria.includes(producto.categoria);
     const cumpleVarietal = !filtros.varietal || filtros.varietal.includes(producto.varietal);
     const cumpleVariedad = !filtros.variedad || filtros.variedad.includes(producto.variedad);
-    const cumpleAnio = !filtros.año || filtros.año.includes(producto.año.toString());
+    const cumpleAnio = !filtros.año || producto.año != null && filtros.año.includes(producto.año.toString());    
     const cumpleBodega = !filtros.bodega || filtros.bodega.includes(producto.bodega);
     const cumpleFiltros = cumpleCategorias && cumplePrecioMaximo && cumplePrecioMinimo && cumpleVarietal && cumpleVariedad && cumpleAnio && cumpleBodega;
     if(cumpleFiltros)productosFiltrados.push(producto)
   }  
   
-  res.render("productos-filtrados",{productosFiltrados, categoria, atributos})    
+  res.render("productos-filtrados",{productosFiltrados, categoria, atributos, oldData: [req.body]})    
   },
   agregarCarrito : async (req,res) => {
     //encontramos el producto en la base de datos y la cantidad que agrego el usuario    
@@ -166,11 +166,37 @@ module.exports = {
         // Caso 2:agregamops el carrito y seteamos la cantidad
         req.session.cart.push({...product, quantity:cantidad})
     }    
+    
+    // console.log(req.session.cart);
     return res.redirect("/")
   },
   carrito: async (req,res) => { 
-    let productoCarro = req.session.cart      
+    let productoCarro = req.session.cart 
+    // console.log(productoCarro);     
     res.render("carrito-de-compras", {productoCarro})
+  },
+  actualizarCarrito: async (req,res) => {
+    // Checueamos cantidad
+    if(req.body.quantity == 0){
+      // Caso 1: si es igual a cero, eliminamos el producto
+      req.session.cart = req.session.cart.filter(item => item.id != req.body.id)
+    }else {
+        // Caso 2: actualizamos todos los itemes del carrito seteando la catidad en el producto seleccionado
+        req.session.cart = req.session.cart.map(item => {
+            if (item.id == req.body.id) {
+                item.quantity = req.body.quantity
+            }
+            return item
+        })
+    }
+    return res.redirect("/carrito")
+  },
+  eliminarCarrito: async (req,res) => {
+    req.session.cart = req.session.cart.filter(item => item.id != req.body.id)
+        return res.redirect("/carrito")
+  },
+  nosotrxs: async (req,res) => {
+    res.render("nosotros")
   }
 }
   

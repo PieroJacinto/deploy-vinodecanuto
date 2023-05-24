@@ -8,38 +8,69 @@
         <%- include('./partials/header') %>
     </header>
     <main class="main-pad ">
-        <section class="home-pad">
-            <h1>carrito</h1>
+        <section class="home-pad mrg-t-1">
+            <h1>Tu Carrito</h1>
             <hr>          
-        </section>
-        <h2>carrito prueba</h2>
+        </section>       
         <section class="home-pad">
-            <% productoCarro.forEach(producto => { %> 
-                <div class="carrito-container">
-                    <div class="carrito-item">
-                        <h2><%= producto.nombre %> <span class="price">$<%= parseInt(producto.precio) * producto.quantity %></span></h2>
-                        <form action="/cart/update" method="post" class="update">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Cantidad</th>                    
+                    <th scope="col">Subtotal</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <% var total = 0 %>
+                <% productoCarro.forEach(producto => { %>
+                    <% total = total + (producto.precio * producto.quantity)%> 
+                <tbody>
+                    <tr>
+                    <th scope="row"><%= producto.nombre %></th>
+                    <td>$<%= parseInt(producto.precio)%></td>                    
+                    <td>
+                        <form action="/carrito/actualizar" method="post" class="update" id="actualizarCarrito">
                             <input type="hidden" name="id" value="<%= producto.id %>" />
-                            <input type="number" name="quantity" value="<%= producto.quantity %>" id="quantity">
-                            <button type="submit">
+                            <input type="number" name="quantity" value="<%= producto.quantity %>" id="quantity" class="text-center">
+                            <button type="submit" class="boton-actualizar-carrito">
                                 <i class="fa-solid fa-sync"></i>
                             </button>
                         </form>
-                        <form action="/cart/delete" method="post" class="delete">
-                            <input type="hidden" name="id" value="<%= producto.id %>" />
-                            <button type="submit">
-                                <i class="fa-solid fa-times"></i>
+                    </td>
+                    <td>$<%= parseInt(producto.precio) * producto.quantity %></td>
+                    <td> 
+                        <form action="/carrito/eliminar" method="post" class="delete" id="eliminarCarrito">
+                            <input type="hidden" name="id" value="<%= producto.id %>" />                            
+                            <button type="submit" class="boton-eliminar-carrito">                                
+                                <i class="fa-solid fa-trash-can"></i>
                             </button>
                         </form>
-
-                    </div>
-
-                </div>
-                 
-            <% }) %>
+                    </td>
+                    </tr>                     
+                </tbody>
+                <% }) %>
+            </table>              
+            <div class="total">
+                total= $<%= total %>
+            </div>
         </section>
-
     </main>
+      <!-- FOOTER -->
+    <footer class="footer-contenedor">
+        <%- include('./partials/footer') %> 
+    </footer>   
+
+       <!-- HAMBURGUER -->
+    <script src="../js/hamburguer.js"></script>   
+        
+    <!-- BOOTSTRAP ENDING LINE -->
+    <script 
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" 
+        crossorigin="anonymous">
+    </script>
 </body>
 </html>
 
